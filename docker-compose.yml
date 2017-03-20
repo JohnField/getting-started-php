@@ -1,15 +1,25 @@
 # Simple Docker for Google Cloud
-# wraps https://hub.docker.com/r/google/cloud-sdk/  
 
-    
+# Wraps https://hub.docker.com/r/google/cloud-sdk/  
+# Refer there for usage, replacing commands as needed
+# e.g.
+# $ docker run -t -i --name gcloud-config google/cloud-sdk gcloud init
+# becomes 
+# $ docker-compose run google-cloud-sdk gcloud init
+# However, for persistance it's easier to use key-files, e.g.
+# $ docker-compose run google-cloud-sdk gcloud auth activate-service-account --key-file /home/docker-local/service-account-key.json
+#
+# Then act via contaner as needed, e.g.
+# docker-compose run google-cloud-sdk gcloud app deploy /home/0-original-hello-world/app.yaml
 google-cloud-sdk:
   image: google/cloud-sdk
 #  ports:
 #    - "80:80"
 #    - "443:443"
-#  volumes:
+  volumes:
 #    - ./var/log/apache2:/var/log/apache2
-#    - .:/var/www/html
+# The repository's files aren't served, but need to be mounted / available.
+    - .:/home/
 #  command: sh /var/www/html/start.sh
 
 
@@ -20,7 +30,9 @@ docker-local:
     - "80:80"
     - "443:443"
   volumes:
-    - ./docker-local:/var/www/html
-    - ./docker-local/var/log/apache2:/var/log/apache2
-  command: sh /var/www/html/start.sh
+#    - ./docker-local:/var/www/html
+# Actually, let's expose the lot.
+    - .:/var/www/html
+#    - ./docker-local/var/log/apache2:/var/log/apache2
+  command: sh /var/www/html/docker-local/start.sh
     

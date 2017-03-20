@@ -1,0 +1,26 @@
+# Simple Docker for Google Cloud
+# wraps https://hub.docker.com/r/google/cloud-sdk/  
+
+    
+google-cloud-sdk:
+  image: google/cloud-sdk
+#  ports:
+#    - "80:80"
+#    - "443:443"
+#  volumes:
+#    - ./var/log/apache2:/var/log/apache2
+#    - .:/var/www/html
+#  command: sh /var/www/html/start.sh
+
+
+# A local server for PHP environment goodness. 
+docker-local:
+  build: docker-local/
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - ./docker-local:/var/www/html
+    - ./docker-local/var/log/apache2:/var/log/apache2
+  command: sh /var/www/html/start.sh
+    
